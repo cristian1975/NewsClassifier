@@ -41,7 +41,7 @@ namespace NewsClassifierModel
 
             if (category.TryGetValue(prediction.Category, out string description))
             {
-                return description; // + " - Prediction:" + prediction.Score[3];
+                return $"Category: { description} -- Prediction - Business:{prediction.Score[0]} Technology:{prediction.Score[1]} Entertainment:{prediction.Score[2]} Health:{prediction.Score[3]}";
             }
 
             return "No Category";
