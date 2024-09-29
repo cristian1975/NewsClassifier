@@ -26,7 +26,7 @@ namespace NewsClassifierModel
         }
 
        
-        public string Predict(string newsTitle)
+        public PredictResponse Predict(string newsTitle)
         {
             Dictionary<string, string> category = new Dictionary<string, string>()
             {
@@ -41,10 +41,18 @@ namespace NewsClassifierModel
 
             if (category.TryGetValue(prediction.Category, out string description))
             {
-                return $"Category: { description} -- Prediction - Business:{prediction.Score[0]} Technology:{prediction.Score[1]} Entertainment:{prediction.Score[2]} Health:{prediction.Score[3]}";
+                return  new PredictResponse
+                {
+                    PredictionCategory = description,
+                    BusinessPercent = (prediction.Score[0] * 100).ToString("N2"),
+                    TechnologyPercent = (prediction.Score[1] * 100).ToString("N2"),
+                    EntertainmentPercent = (prediction.Score[2] * 100).ToString("N2"),
+                    HealthPercent = (prediction.Score[3] * 100).ToString("N2")
+                };
+              //  return $"Category: { description} -- Prediction - Business:{prediction.Score[0]} Technology:{prediction.Score[1]} Entertainment:{prediction.Score[2]} Health:{prediction.Score[3]}";
             }
 
-            return "No Category";
+            return null;
             
         }
 
