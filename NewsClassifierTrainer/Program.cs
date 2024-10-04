@@ -112,14 +112,15 @@ namespace NewsClassifierTrainer
                 separatorChar: ',',
                 allowQuoting: true);
 
+            var dataSplit = mlContext.Data.TakeRows(trainingDataView,4000);
             var preProcessingPipeline = mlContext.Transforms.Conversion
                 .MapValueToKey(inputColumnName: "Category", outputColumnName: "Category");
 
-            var mappedInputData = preProcessingPipeline.Fit(trainingDataView).Transform(trainingDataView);
+            var mappedInputData = preProcessingPipeline.Fit(dataSplit).Transform(dataSplit);
 
             var experimentSettings = new MulticlassExperimentSettings
             {
-                MaxExperimentTimeInSeconds = 300,
+                MaxExperimentTimeInSeconds = 30,
                 CacheBeforeTrainer = CacheBeforeTrainer.On,
                 OptimizingMetric = MulticlassClassificationMetric.MicroAccuracy,
                 CacheDirectory = null
@@ -141,9 +142,9 @@ namespace NewsClassifierTrainer
 
             var metrics = experimentResult.BestRun.ValidationMetrics;
 
-            Console.WriteLine($"MicroAccuracy: {metrics.MicroAccuracy:0.##}");
-            Console.WriteLine($"MacroAccuracy: {metrics.MacroAccuracy:0.##}");
-
+            Console.WriteLine($"MicroAccuracy: {metrics.MicroAccuracy:0.####}");
+            Console.WriteLine($"MacroAccuracy: {metrics.MacroAccuracy:0.####}");
+            //Console.WriteLine($"ConfusionMatrix: {metrics.ConfusionMatrix.GetFormattedConfusionTable()}");
 
         }
     }

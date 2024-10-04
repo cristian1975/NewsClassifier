@@ -21,9 +21,12 @@ namespace NewsClassifier
 
             foreach (var headline in headlines)
             {
-                var classification = consumeModel.Predict(headline);
+                PredictResponse prediction = consumeModel.Predict(headline);
 
-                Console.WriteLine($"{classification}: {headline}");
+                Console.WriteLine($"{headline} ");
+                Console.WriteLine($" --- Category: { prediction.PredictionCategory}");
+                Console.WriteLine($" --- Prediction - Business:{prediction.BusinessPercent}% Technology:{prediction.TechnologyPercent}% Entertainment:{prediction.EntertainmentPercent}% Health:{prediction.HealthPercent}% ");
+                Console.WriteLine();
             }
 
             Console.WriteLine();
